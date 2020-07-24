@@ -52,7 +52,19 @@
       		</plugin>
         </plugins>
   </build>
-  
+
+	<repositories>
+		<repository>
+			<!-- OSS Sonatype repo -->
+			<id>oss-repo</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</repository>
+		<repository>
+			<id>spigot-repo</id>
+			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+		</repository>
+	</repositories>
+
   <dependencies>
 	<dependency>
     	<groupId>org.mindrot</groupId>
@@ -74,7 +86,25 @@
       	<groupId>com.zaxxer</groupId>
       	<artifactId>HikariCP</artifactId>
       	<version>3.3.1</version>
+		<exclusions>
+			<exclusion>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+			</exclusion>
+		</exclusions>
     </dependency>
+	  <dependency>
+		  <groupId>net.md-5</groupId>
+		  <artifactId>bungeecord-api</artifactId>
+		  <version>1.13-SNAPSHOT</version>
+		  <scope>provided</scope>
+		  <exclusions>
+			  <exclusion>
+				  <groupId>org.slf4j</groupId>
+				  <artifactId>slf4j-api</artifactId>
+			  </exclusion>
+		  </exclusions>
+	  </dependency>
   </dependencies>
 
 </project>

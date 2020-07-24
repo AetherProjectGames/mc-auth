@@ -25,7 +25,7 @@ import me.mastercapexd.auth.email.EmailLetterType;
 import me.mastercapexd.auth.email.EmailSettings;
 import me.mastercapexd.auth.email.LetterSettings;
 import me.mastercapexd.auth.storage.StorageType;
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.plugin.Plugin;
 import net.md_5.bungee.config.Configuration;
@@ -110,7 +110,7 @@ public class BungeePluginConfig implements PluginConfig {
 	public ServerInfo findServerInfo(List<Server> servers) {
 		ServerInfo optimal = null;
 		for (Server server : servers) {
-			ServerInfo serverInfo = BungeeCord.getInstance().getServerInfo(server.getId());
+			ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(server.getId());
 			if (serverInfo.getPlayers().size() >= server.getMaxPlayers())
 				continue;
 			optimal = serverInfo;

@@ -7,14 +7,15 @@ import me.mastercapexd.auth.Auth;
 import me.mastercapexd.auth.IdentifierType;
 import me.mastercapexd.auth.PluginConfig;
 import me.mastercapexd.auth.storage.AccountStorage;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.config.ServerInfo;
+import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.api.event.ChatEvent;
-import net.md_5.bungee.api.event.PlayerDisconnectEvent;
-import net.md_5.bungee.api.event.PostLoginEvent;
-import net.md_5.bungee.api.event.PreLoginEvent;
+import net.md_5.bungee.api.event.*;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+
+import java.util.UUID;
 
 @RequiredArgsConstructor
 public class EventListener implements Listener {
@@ -23,12 +24,12 @@ public class EventListener implements Listener {
 	private final AccountFactory accountFactory;
 	private final AccountStorage accountStorage;
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
-	public void on(PreLoginEvent event) {
+	public void on(LoginEvent event) {
 		String name = event.getConnection().getName();
 		if (!config.getNamePattern().matcher(name).matches()) {
-			event.setCancelReason(config.getMessages().getMessage("illegal-name-chars"));
+			String cancelReason = config.getMessages().getMessage("illegal-name-chars");
+			event.setCancelReason(new TextComponent(cancelReason));
 			event.setCancelled(true);
 		}
 		
@@ -37,17 +38,18 @@ public class EventListener implements Listener {
 		
 		IdentifierType identifierType = config.getActiveIdentifierType();
 		String id = identifierType == IdentifierType.UUID ? event.getConnection().getUniqueId().toString() : name.toLowerCase();
-		
+
 		accountStorage.getAccount(id).thenAccept(account -> {
 			if (account == null)
 				return;
 			if (account.getName().equals(name))
 				return;
-			event.setCancelReason(config.getMessages().getMessage("check-name-case-failed").replace("%correct%", account.getName()).replace("%failed%", name));
+			String cancelReason = config.getMessages().getMessage("check-name-case-failed").replace("%correct%", account.getName()).replace("%failed%", name);
+			event.setCancelReason(new TextComponent(cancelReason));
 			event.setCancelled(true);
 		});
 	}
-	
+
 	@EventHandler
 	public void on(PostLoginEvent event) {
 		ProxiedPlayer player = event.getPlayer();

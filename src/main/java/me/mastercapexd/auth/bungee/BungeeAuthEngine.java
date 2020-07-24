@@ -8,7 +8,7 @@ import me.mastercapexd.auth.Auth;
 import me.mastercapexd.auth.AuthEngine;
 import me.mastercapexd.auth.PluginConfig;
 import me.mastercapexd.auth.Server;
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.config.ServerInfo;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -24,13 +24,13 @@ public class BungeeAuthEngine implements AuthEngine {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void start() {
-		this.authTask = BungeeCord.getInstance().getScheduler().schedule(plugin, () -> {
+		this.authTask = ProxyServer.getInstance().getScheduler().schedule(plugin, () -> {
 			
 			long now = System.currentTimeMillis();
 			
 			for (Server server : config.getAuthServers()) {
 				
-				ServerInfo serverInfo = BungeeCord.getInstance().getServerInfo(server.getId());
+				ServerInfo serverInfo = ProxyServer.getInstance().getServerInfo(server.getId());
 				if (serverInfo == null)
 					continue;
 				

@@ -1,6 +1,6 @@
 package me.mastercapexd.auth;
 
-import net.md_5.bungee.BungeeCord;
+import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 public enum IdentifierType {
@@ -13,7 +13,7 @@ public enum IdentifierType {
 		
 		@Override
 		public ProxiedPlayer getPlayer(String id) {
-			return BungeeCord.getInstance().getPlayer(java.util.UUID.fromString(id));
+			return ProxyServer.getInstance().getPlayer(java.util.UUID.fromString(id));
 		}
 	},
 	NAME {
@@ -24,7 +24,7 @@ public enum IdentifierType {
 		
 		@Override
 		public ProxiedPlayer getPlayer(String id) {
-			return BungeeCord.getInstance().getPlayer(id);
+			return ProxyServer.getInstance().getPlayer(id);
 		}
 	};
 	
