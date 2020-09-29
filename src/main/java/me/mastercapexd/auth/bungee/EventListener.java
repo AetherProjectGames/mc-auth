@@ -86,10 +86,18 @@ public class EventListener implements Listener {
 			return;
 		
 		String message = event.getMessage();
-		if (!message.toLowerCase().startsWith("/l") && !message.toLowerCase().startsWith("/reg") && !message.toLowerCase().startsWith("/confirm") && !message.toLowerCase().startsWith("/recovery")) {
+		if (!isLoginCommand(message) && !isRegistrationCommand(message) && !message.toLowerCase().startsWith("/confirm") && !message.toLowerCase().startsWith("/recovery")) {
 			player.sendMessage(config.getMessages().getMessage("disabled-command"));
 			event.setCancelled(true);
 		}
+	}
+
+	private boolean isLoginCommand(String message) {
+		return message.toLowerCase().startsWith("/l ") || message.toLowerCase().startsWith("/login ");
+	}
+
+	private boolean isRegistrationCommand(String message) {
+		return message.toLowerCase().startsWith("/reg ") || message.toLowerCase().startsWith("/register ");
 	}
 	
 	@EventHandler
